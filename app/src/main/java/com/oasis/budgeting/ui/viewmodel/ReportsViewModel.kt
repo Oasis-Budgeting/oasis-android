@@ -32,31 +32,33 @@ class ReportsViewModel(private val repository: ReportRepository) : ViewModel() {
         loadReport(index)
     }
 
+    private var cachedData = ReportsData()
+
     fun loadReport(tabIndex: Int = 0) {
         viewModelScope.launch {
             _state.value = UiState.Loading
             val currentMonth = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"))
-            val data = (_state.value as? UiState.Success)?.data ?: ReportsData()
+            val data = cachedData
 
             when (tabIndex) {
                 0 -> {
                     repository.getSpendingByCategory()
-                        .onSuccess { _state.value = UiState.Success(data.copy(spendingByCategory = it)) }
+                        .onSuccess { cachedData = data.copy(spendingByCategory = it); _state.value = UiState.Success(cachedData) }
                         .onFailure { _state.value = UiState.Error(it.message ?: "Failed to load report") }
                 }
                 1 -> {
                     repository.getIncomeVsExpense(12)
-                        .onSuccess { _state.value = UiState.Success(data.copy(incomeVsExpense = it)) }
+                        .onSuccess { cachedData = data.copy(incomeVsExpense = it); _state.value = UiState.Success(cachedData) }
                         .onFailure { _state.value = UiState.Error(it.message ?: "Failed to load report") }
                 }
                 2 -> {
                     repository.getNetWorth(12)
-                        .onSuccess { _state.value = UiState.Success(data.copy(netWorth = it)) }
+                        .onSuccess { cachedData = data.copy(netWorth = it); _state.value = UiState.Success(cachedData) }
                         .onFailure { _state.value = UiState.Error(it.message ?: "Failed to load report") }
                 }
                 3 -> {
                     repository.getBudgetVsActual(currentMonth)
-                        .onSuccess { _state.value = UiState.Success(data.copy(budgetVsActual = it)) }
+                        .onSuccess { cachedData = data.copy(budgetVsActual = it); _state.value = UiState.Success(cachedData) }
                         .onFailure { _state.value = UiState.Error(it.message ?: "Failed to load report") }
                 }
             }

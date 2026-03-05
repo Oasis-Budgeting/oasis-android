@@ -33,7 +33,7 @@ class SettingsViewModel(private val repository: SettingsRepository) : ViewModel(
                     _state.value = UiState.Success(AppSettings(it, serverUrl))
                 }
                 .onFailure {
-                    _state.value = UiState.Success(AppSettings(serverUrl = serverUrl))
+                    _state.value = UiState.Error(it.message ?: "Failed to load settings")
                 }
         }
     }

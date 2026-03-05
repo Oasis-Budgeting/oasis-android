@@ -27,9 +27,16 @@ class DebtsViewModel(private val repository: DebtRepository) : ViewModel() {
             _state.value = UiState.Loading
             var debts: List<Debt> = emptyList()
             var strategies: DebtStrategies? = null
+            var debtsLoaded = false
 
-            repository.getDebts().onSuccess { debts = it }
+            repository.getDebts()
+                .onSuccess { debts = it; debtsLoaded = true }
             repository.getStrategies().onSuccess { strategies = it }
+
+            if (!debtsLoaded) {
+                _state.value = UiState.Error("Failed to load debts")
+                return@launch
+            }
 
             _state.value = UiState.Success(DebtsData(debts, strategies))
         }

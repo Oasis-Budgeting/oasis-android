@@ -37,6 +37,7 @@ class DashboardViewModel(
             _state.value = UiState.Loading
             val currentMonth = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"))
 
+            val errors = mutableListOf<String>()
             var accounts: List<Account> = emptyList()
             var budgetSummary: BudgetSummary? = null
             var recentTransactions: List<Transaction> = emptyList()
@@ -44,6 +45,7 @@ class DashboardViewModel(
 
             accountRepository.getAccounts()
                 .onSuccess { accounts = it }
+                .onFailure { errors.add("accounts") }
 
             budgetRepository.getSummary(currentMonth)
                 .onSuccess { budgetSummary = it }
@@ -53,6 +55,11 @@ class DashboardViewModel(
 
             insightRepository.getInsights()
                 .onSuccess { insights = it }
+
+            if ("accounts" in errors) {
+                _state.value = UiState.Error("Failed to load accounts")
+                return@launch
+            }
 
             val totalBalance = accounts.filter { !it.closed }.sumOf { it.balance }
 
