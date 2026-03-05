@@ -19,6 +19,8 @@ import com.oasis.budgeting.ui.viewmodel.UiState
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+private const val WEEKS_PER_MONTH = 4.33
+
 private fun formatCurrency(amount: Double): String {
     return String.format("$%,.2f", amount)
 }
@@ -71,7 +73,7 @@ fun SubscriptionsScreen(
                         when (it.frequency.lowercase()) {
                             "yearly" -> it.amount / 12
                             "quarterly" -> it.amount / 3
-                            "weekly" -> it.amount * 4.33
+                            "weekly" -> it.amount * WEEKS_PER_MONTH
                             else -> it.amount
                         }
                     }
