@@ -84,7 +84,7 @@ fun InvestmentsScreen(
                         }
                         items(state.data) { inv ->
                             val gain = inv.currentValue - inv.costBasis
-                            Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = CardBackground), onClick = { editingInv = inv }) {
+                            Card(onClick = { editingInv = inv }, modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = CardBackground)) {
                                 Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
                                     Column(Modifier.weight(1f)) {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
