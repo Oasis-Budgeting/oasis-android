@@ -69,7 +69,7 @@ fun GoalsScreen(
                     LazyColumn(Modifier.fillMaxSize().padding(padding).padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(vertical = 8.dp)) {
                         items(state.data) { goal ->
                             val progress = if (goal.targetAmount > 0) (goal.currentAmount / goal.targetAmount).toFloat().coerceIn(0f, 1f) else 0f
-                            Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = CardBackground), onClick = { editingGoal = goal }) {
+                            Card(onClick = { editingGoal = goal }, modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = CardBackground)) {
                                 Column(Modifier.padding(16.dp)) {
                                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                                         Text(goal.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
