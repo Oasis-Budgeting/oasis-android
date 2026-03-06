@@ -99,7 +99,7 @@ fun DebtsScreen(
                             }
                         }
                         items(data.debts) { debt ->
-                            Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = CardBackground), onClick = { editingDebt = debt }) {
+                            Card(onClick = { editingDebt = debt }, modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = CardBackground)) {
                                 Row(Modifier.fillMaxWidth().padding(12.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                                     Column(Modifier.weight(1f)) {
                                         Text(debt.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
